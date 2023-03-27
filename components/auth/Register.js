@@ -13,7 +13,6 @@ const Register = ({ navigation }) => {
     const auth = getAuth(app);
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(data)
     } catch (err) {
       console.log('err: ', err)
     }
