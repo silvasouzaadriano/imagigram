@@ -1,27 +1,24 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchUser} from '../redux/actions';
 
 const Main = (props) => {
+  const user = useSelector(state => state.userState.currentUser)
+  const dispatch = useDispatch()
+
+
   useEffect(() => {
-    props.fetchUser();
+    dispatch(fetchUser());
   }, []);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Bem vindo!</Text>
+        <Text>Bem vindo {user?.name}!</Text>
     </View>
   )
 }
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    { fetchUser },
-    dispatch
-  );
-
-export default connect(null, mapDispatchToProps)(Main);
+export default Main;
