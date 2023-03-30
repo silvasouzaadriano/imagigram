@@ -10,6 +10,7 @@ import { fetchUser} from '../redux/actions';
 
 import Feed from './main/Feed';
 import Add from './main/Add';
+import Profile from './main/Profile';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -39,6 +40,15 @@ const Main = (props) => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name='plus-box' size={26} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name='Profiç' 
+        component={Profile} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name='account-circle' size={26} color={color} />
           ),
         }}
       />
