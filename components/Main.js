@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { fetchUser} from '../redux/actions';
 
 import Feed from './main/Feed';
+import Add from './main/Add';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -29,6 +30,15 @@ const Main = (props) => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name='newspaper-variant' size={26} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name='Add' 
+        component={Add} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name='plus-box' size={26} color={color} />
           ),
         }}
       />
