@@ -11,7 +11,6 @@ const Login = () => {
   const handleSubmit = async () => {
     const auth = getAuth(app);
     const data = await signInWithEmailAndPassword(auth, email, password)
-    console.log('data: ', data)
   };
 
   return (
