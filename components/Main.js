@@ -14,6 +14,8 @@ import Profile from './main/Profile';
 
 const Tab = createMaterialBottomTabNavigator();
 
+const Null = () => null;
+
 const Main = (props) => {
   useEffect(() => {
     props.fetchUser();
@@ -35,8 +37,14 @@ const Main = (props) => {
         }}
       />
       <Tab.Screen 
-        name='Add' 
-        component={Add} 
+        name='AddContainer' 
+        component={Null}
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+            navigation.navigate('Add');
+          },
+        })}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name='plus-box' size={26} color={color} />
@@ -44,7 +52,7 @@ const Main = (props) => {
         }}
       />
       <Tab.Screen 
-        name='Profiç' 
+        name='Profile' 
         component={Profile} 
         options={{
           tabBarIcon: ({ color, size }) => (
