@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Text, Button, View } from 'react-native';
+import { View, Image } from 'react-native';
+import { Text, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function Add() {
@@ -25,6 +26,19 @@ export default function Add() {
       setImage(data.uri);
     }
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
   
 
   if (hasCameraPermission === null || hasGalleryPermission === null) {
@@ -39,19 +53,22 @@ export default function Add() {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
-        <Camera 
-          ref={(ref) => setCamera(ref)}
-          style={{ flex: 1, aspectRatio: 1 }} 
-          type={type} 
-          ratio={'1:1'} 
-        />
+        {image ? (
+          <Image source={{ uri: image }} style={{ flex: 1 }} />
+        ) : (
+          <Camera
+            ref={(ref) => setCamera(ref)}
+            style={{ flex: 1, aspectRatio: 1 }}
+            type={type}
+            ratio={'1:1'}
+          />
+        )}
       </View>
       <View style={{
         flex: 1, 
-        flexDirection: 'row', 
+        flexDirection: 'column', 
         justifyContent: 'center', 
-        alignItems: 'flex-end',
-        marginBottom: '1rem'
+        alignItems: 'center'
       }}>
         <Button 
           title='Flip Camera'
@@ -63,7 +80,12 @@ export default function Add() {
             );
           }}
         />
-        <Button title="Take Picture" icon='camera-plus-outline' onPress={() => takePicture()}/>
+        <Button  icon='camera-plus-outline' onPress={() => takePicture()}>
+        Take Picture
+        </Button>
+        <Button icon='image-album' onPress={() => pickImage()}>
+          Select from the Gallery
+        </Button>
       </View>
     </View>
   );
