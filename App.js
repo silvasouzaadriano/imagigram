@@ -15,6 +15,7 @@ import Landing from './components/auth/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Add from './components/main/Add';
+import Save from './components/main/Save';
 
 import { app }  from './database/firebaseConfig';
 
@@ -41,6 +42,11 @@ const App = () => {
     });
   }, []);
   
+  const Loading = () => (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Carregando...</Text>
+    </View>
+  );
   
   const LoggedIn = () => (
     <Provider store={store}>
@@ -52,16 +58,11 @@ const App = () => {
             options={{ headerShown: false }} 
           />
           <Stack.Screen name='Add' component={Add} />
+          <Stack.Screen name='Save' component={Save} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   )
-  
-  const Loading = () => (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Carregando...</Text>
-    </View>
-  );
   
   const LoggedOut = () => (
     <NavigationContainer>
