@@ -6,7 +6,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchUser} from '../redux/actions';
+import { getAuth } from "firebase/auth";
+import { app }  from '../database/firebaseConfig'
+
+import { 
+  fetchUser, 
+  fetchUserPosts
+} from '../redux/actions';
 
 import Feed from './main/Feed';
 import Profile from './main/Profile';
@@ -15,10 +21,14 @@ const Tab = createMaterialBottomTabNavigator();
 
 const Null = () => null;
 
-const Main = (props) => {
+const Main = ({ fetchUser, fetchUserPosts}) => {
   useEffect(() => {
-    props.fetchUser();
+    fetchUser();
+    fetchUserPosts();
   }, []);
+
+  const auth = getAuth(app);
+  const uid = auth.currentUser.uid;
 
   return (
     <Tab.Navigator
@@ -53,6 +63,14 @@ const Main = (props) => {
       <Tab.Screen 
         name='Profile' 
         component={Profile} 
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+            navigation.navigate('Profile', {
+              uid,
+            });
+          },
+        })}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name='account-circle' size={26} color={color} />
@@ -69,7 +87,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
-    { fetchUser },
+    { fetchUser, fetchUserPosts },
     dispatch
   );
 
