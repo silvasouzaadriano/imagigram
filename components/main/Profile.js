@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, FlatList } from 'react-native';
 import { Avatar, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
-import { doc, collection, query, getDocs, getDoc, setDoc } from "firebase/firestore";
+import { doc, collection, query, getDocs, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 
 import { db }  from '../../database/firebaseConfig';
 
@@ -59,6 +59,11 @@ const Profile = ({ currentUser, posts, route }) => {
     setIsFollowing(true)
   }
 
+  const handleUnFollow = async () => {
+    await deleteDoc(doc(db, "following", currentUser.uid, 'userFollowing', uid));
+    setIsFollowing(false)
+  }
+
   if (!user) return <View />;
 
   return (
@@ -89,6 +94,14 @@ const Profile = ({ currentUser, posts, route }) => {
                       onPress={handleFollow}
                     >
                       Follow
+                    </Button>
+                  )}
+                  {!isFollowing && (
+                    <Button
+                      icon='account-multiple-remove-outline'
+                      onPress={handleUnFollow}
+                    >
+                      Unfollow
                     </Button>
                   )}
                 </>
