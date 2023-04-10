@@ -4,7 +4,8 @@ import "firebase/auth";
 import "firebase/firestore";
 import { 
   USER_STATE_CHANGE,
-  USER_POST_CHANGE
+  USER_POST_CHANGE,
+  USER_FOLLOWING_CHANGE
 } from '../constants';
 
 import { app, db }  from '../../database/firebaseConfig';
@@ -45,6 +46,23 @@ export const fetchUserPosts = () => {
     });
 
     dispatch({ type: USER_POST_CHANGE, posts });
+
+  };
+};
+
+export const fetchUserFollowing = () => {
+  return async (dispatch) => {
+    const auth = getAuth(app);
+    const uid = auth.currentUser.uid;
+
+    const followingRef = collection(db, "following")
+
+    const queryFollowing = query(collection(followingRef, uid, 'userFollowing'));
+    const querySnapshot = await getDocs(queryFollowing);
+
+    const following = querySnapshot.docs.map(doc => doc.id)
+
+    dispatch({ type: USER_FOLLOWING_CHANGE, following });
 
   };
 };

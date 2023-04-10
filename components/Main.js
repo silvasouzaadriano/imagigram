@@ -11,7 +11,8 @@ import { app }  from '../database/firebaseConfig'
 
 import { 
   fetchUser, 
-  fetchUserPosts
+  fetchUserPosts,
+  fetchUserFollowing
 } from '../redux/actions';
 
 import Feed from './main/Feed';
@@ -22,10 +23,11 @@ const Tab = createMaterialBottomTabNavigator();
 
 const Null = () => null;
 
-const Main = ({ fetchUser, fetchUserPosts}) => {
+const Main = ({ fetchUser, fetchUserPosts, fetchUserFollowing }) => {
   useEffect(() => {
     fetchUser();
     fetchUserPosts();
+    fetchUserFollowing();
   }, []);
 
   const auth = getAuth(app);
@@ -97,7 +99,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
-    { fetchUser, fetchUserPosts },
+    { fetchUser, fetchUserPosts, fetchUserFollowing },
     dispatch
   );
 
