@@ -4,12 +4,13 @@ import { Avatar, Card, Button } from 'react-native-paper';
 import { connect } from 'react-redux';
 
 import { doc, collection, query, getDocs, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { getAuth, signOut } from 'firebase/auth';
 
-import { db }  from '../../database/firebaseConfig';
+import { db, app }  from '../../database/firebaseConfig';
 
-import { fetchUserFollowing } from '../../redux/actions'
+import { fetchUserFollowing, clearData } from '../../redux/actions'
 
-const Profile = ({ currentUser, following, posts, route, fetchUserFollowing }) => {
+const Profile = ({ currentUser, following, posts, route, fetchUserFollowing, clearData }) => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -77,6 +78,17 @@ const Profile = ({ currentUser, following, posts, route, fetchUserFollowing }) =
     fetchUserFollowing();
   }
 
+  const handleLogout = () => {
+    const auth = getAuth(app);
+
+    signOut(auth).then(() => {
+      clearData();
+      console.log('Sign-out successful')
+    }).catch((error) => {
+      console.log('An error happened: ', error)
+    });
+  }
+
   if (!user) return <View />;
 
   return (
@@ -118,6 +130,11 @@ const Profile = ({ currentUser, following, posts, route, fetchUserFollowing }) =
                     </Button>
                   )}
                 </>
+              )}
+              {uid && uid === currentUser.uid && (
+                <Button icon='logout-variant' onPress={handleLogout}>
+                  Logout
+                </Button>
               )}
             </Card.Actions>
           </Card.Content>
@@ -165,6 +182,9 @@ const mapStateToProps = (store) => ({
   following: store.userState.following
 });
 
-const mapDispatchToProps = { fetchUserFollowing }
+const mapDispatchToProps = {
+  fetchUserFollowing, 
+  clearData
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
