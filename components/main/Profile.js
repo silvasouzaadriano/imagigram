@@ -16,8 +16,6 @@ const Profile = ({ currentUser, following, posts, route, fetchUserFollowing, cle
   const [isFollowing, setIsFollowing] = useState(false);
   const { uid } = route.params;
 
-  following && console.log('following: ', uid, following, following.includes(uid))
-
   useEffect(() => {
     if (uid && uid === currentUser.uid) {
       setUser(currentUser);
