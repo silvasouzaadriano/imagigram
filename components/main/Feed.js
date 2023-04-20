@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, FlatList } from 'react-native';
-import { Button } from 'react-native-paper'
-
 import {
   ActivityIndicator,
   Avatar,
   Card,
-  Paragraph
+  Paragraph,
+  Button,
+  Caption
 } from 'react-native-paper';
 
 import { connect } from 'react-redux';
+
+import { collection, doc, setDoc } from 'firebase/firestore';
+
+import { db }  from '../../database/firebaseConfig';
 
 const Loading = () => (
   <View style={styles.loadingContainer}>
@@ -17,7 +21,7 @@ const Loading = () => (
   </View>
 )
 
-const Feed = ({ feed, navigation, following, usersFollowingLoaded }) => {
+const Feed = ({ currentUser, feed, navigation, following, usersFollowingLoaded }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -27,6 +31,11 @@ const Feed = ({ feed, navigation, following, usersFollowingLoaded }) => {
     }
     
   }, [feed, usersFollowingLoaded])
+
+  const onLikePress = async (userId, postId) => {
+    const postsRef = collection(db, "posts")
+    await setDoc(doc(postsRef, userId, 'userPosts', postId, 'likes', currentUser.uid), {})
+  }
 
   return (
     <View style={styles.container}>
@@ -58,6 +67,13 @@ const Feed = ({ feed, navigation, following, usersFollowingLoaded }) => {
                 </View>
                 <Paragraph>{item?.caption}</Paragraph>
                 <Card.Actions>
+                  <Caption>10</Caption>
+                  <Button
+                    icon='heart'
+                    onPress={() => onLikePress(item.user.uid, item.id)}
+                  >
+                    Like
+                  </Button>
                   <Button
                     icon='comment-arrow-right'
                     onPress={() => {
@@ -105,6 +121,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
   following: store.userState.following,
   feed: store.usersState.feed,
   usersFollowingLoaded: store.usersState.usersFollowingLoaded
