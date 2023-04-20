@@ -16,6 +16,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Add from './components/main/Add';
 import Save from './components/main/Save';
+import Comment from './components/main/Comment';
 
 import { app }  from './database/firebaseConfig';
 
@@ -59,6 +60,7 @@ const App = () => {
           />
           <Stack.Screen name='Add' component={Add} />
           <Stack.Screen name='Save' component={Save} />
+          <Stack.Screen name='Comment' component={Comment} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, FlatList } from 'react-native';
+import { Button } from 'react-native-paper'
 
 import {
   ActivityIndicator,
@@ -16,7 +17,7 @@ const Loading = () => (
   </View>
 )
 
-const Feed = ({ feed, following, usersFollowingLoaded }) => {
+const Feed = ({ feed, navigation, following, usersFollowingLoaded }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -56,6 +57,19 @@ const Feed = ({ feed, following, usersFollowingLoaded }) => {
                   <Image style={styles.image} source={{ uri: item?.downloadURL }} />
                 </View>
                 <Paragraph>{item?.caption}</Paragraph>
+                <Card.Actions>
+                  <Button
+                    icon='comment-arrow-right'
+                    onPress={() => {
+                      navigation.navigate('Comment', {
+                        postId: item.id,
+                        uid: item.user.uid
+                      })
+                    }}
+                  >
+                    View Comments...
+                  </Button>
+                </Card.Actions>
               </Card.Content>
 
             </Card>
