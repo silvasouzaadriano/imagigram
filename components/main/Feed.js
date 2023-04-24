@@ -15,13 +15,15 @@ import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
 import { db }  from '../../database/firebaseConfig';
 
+import { fetchUsersFollowingLikes } from '../../redux/actions'
+
 const Loading = () => (
   <View style={styles.loadingContainer}>
     <ActivityIndicator animating={true}  color={'#ff7300'} size='large' />
   </View>
 )
 
-const Feed = ({ currentUser, feed, navigation, following, usersFollowingLoaded }) => {
+const Feed = ({ currentUser, feed, navigation, following, usersFollowingLoaded, fetchUsersFollowingLikes }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -35,10 +37,12 @@ const Feed = ({ currentUser, feed, navigation, following, usersFollowingLoaded }
   const onLikePress = async (userId, postId) => {
     const postsRef = collection(db, "posts")
     await setDoc(doc(postsRef, userId, 'userPosts', postId, 'likes', currentUser.uid), {})
+    fetchUsersFollowingLikes(userId, postId)
   }
 
   const onDisLikePress = async (userId, postId) => {
     await deleteDoc(doc(db, 'posts', userId, 'userPosts', postId, 'likes', currentUser.uid))
+    fetchUsersFollowingLikes(userId, postId)
   }
 
   return (
@@ -71,8 +75,8 @@ const Feed = ({ currentUser, feed, navigation, following, usersFollowingLoaded }
                 </View>
                 <Paragraph>{item?.caption}</Paragraph>
                 <Card.Actions>
-                  <Caption>{item?.likes || 2 }</Caption>
-                  {item?.currentUserLike ? (
+                  <Caption>{item?.likes}</Caption>
+                  {item?.currentUserLike && item?.likes > 0 ? (
                     <Button
                       icon='heart'
                       onPress={() => onDisLikePress(item.user.uid, item.id)}
@@ -140,4 +144,6 @@ const mapStateToProps = (store) => ({
   usersFollowingLoaded: store.usersState.usersFollowingLoaded
 });
 
-export default connect(mapStateToProps, null)(Feed);
+const mapDispatchToProps = { fetchUsersFollowingLikes }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);
