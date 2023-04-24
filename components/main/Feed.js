@@ -10,6 +10,7 @@ import {
 } from 'react-native-paper';
 
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
@@ -144,6 +145,7 @@ const mapStateToProps = (store) => ({
   usersFollowingLoaded: store.usersState.usersFollowingLoaded
 });
 
-const mapDispatchToProps = { fetchUsersFollowingLikes }
+const mapDispatchProps = (dispatch) =>
+  bindActionCreators({ fetchUsersFollowingLikes }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default connect(mapStateToProps, mapDispatchProps)(Feed);
