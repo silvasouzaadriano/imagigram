@@ -1,37 +1,30 @@
 import * as React from 'react';
-import {Text, View, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Image } from 'react-native';
+import { Button } from 'react-native-paper';
+import logo from '../../assets/images/Imagigram.png';
 
 const Landing = ({ navigation }) => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text style={{ marginBottom: '1rem'}}>Welcome to Imagigram</Text>
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => navigation.navigate('Register')}>
-      <Text style={styles.text}>Register</Text>
-    </TouchableOpacity>
-    
-    <Button
-      icon='login-variant'
-      title="Login"
-      onPress={() => navigation.navigate('Login')}
+    <Image
+      style={{ width: '43%', height: 205, marginBottom: 48 }}
+      source={logo}
     />
+    <Button
+      style={{ marginTop: 12 }}
+      icon='account-plus-outline'
+      onPress={() => navigation.navigate('Register')}
+    >
+      Register
+    </Button>
+    <Button
+      style={{ marginTop: 12 }}
+      icon='login-variant'
+      onPress={() => navigation.navigate('Login')}
+    >
+      Login
+    </Button>
 
   </View>
 );
 
 export default Landing;
-
-const styles = StyleSheet.create({
-  text: {
-    color: '#FFFFFF',
-    fontWeight: 600,
-    textTransform: 'uppercase'
-
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#2196F3',
-    padding: 10,
-    marginBottom: '1rem'
-  },
-});
