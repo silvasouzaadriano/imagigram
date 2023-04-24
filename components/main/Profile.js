@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, FlatList } from 'react-native';
 import { Avatar, Card, Button } from 'react-native-paper';
+
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { doc, collection, query, getDocs, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, signOut } from 'firebase/auth';
@@ -180,9 +182,7 @@ const mapStateToProps = (store) => ({
   following: store.userState.following
 });
 
-const mapDispatchToProps = {
-  fetchUserFollowing, 
-  clearData
-}
+const mapDispatchProps = (dispatch) =>
+  bindActionCreators({ fetchUserFollowing, clearData }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchProps)(Profile);
