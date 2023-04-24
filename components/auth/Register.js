@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {View, TextInput, Button} from 'react-native';
+import { View } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import "firebase/auth";
